@@ -44,4 +44,4 @@ def main(input_f, output_f):  # Main function
 
 
 if __name__ == "__main__":
-    main("../data/AirQualityUCI/AirQualityUCI.csv", "../data/preliminary.csv")
+    main("../data/AirQualityUCI/AirQualityUCI.csv", "../data/training/preliminary.csv")
