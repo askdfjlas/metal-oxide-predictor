@@ -22,7 +22,7 @@ def divideset(rows, column, value):
         split_function = lambda row: row[column] == value
 
     # Divide the rows into two sets and return them
-    set1 = [row for row in rows if split_function(row)]
+    set1 = [row for row in rows if split_function(row)]  # Missing values go into both branches
     set2 = [row for row in rows if not split_function(row)]
     return (set1, set2)
 
@@ -34,16 +34,6 @@ def uniquecounts(rows):
     for row in rows:
         # The result is the last column
         r = row[len(row) - 1]
-        if r not in results:
-            results[r] = 0
-        results[r] += 1
-    return results
-
-
-def uniquecounts_h(rows, col_num):
-    results = {}
-    for row in rows:
-        r = row[col_num]
         if r not in results:
             results[r] = 0
         results[r] += 1
@@ -72,15 +62,6 @@ def giniimpurity(rows):
 # the different possible classes
 def entropy(rows):
     results = uniquecounts(rows)
-    ent = 0.0
-    for r in results.keys():
-        p = float(results[r]) / len(rows)
-        ent = ent - p * log(p, 2)
-    return ent
-
-
-def entropy_h(rows, col_num):
-    results = uniquecounts_h(rows, col_num)
     ent = 0.0
     for r in results.keys():
         p = float(results[r]) / len(rows)
@@ -197,51 +178,6 @@ def buildtree(rows, scoref=entropy,
                             tb=trueBranch, fb=falseBranch)
     else:
         return decisionnode(results=uniquecounts(rows))
-
-
-# Decision tree with hierarchical class label
-def buildtree_h(rows, col_num, shift, scoref=entropy_h,
-              min_gain=0, min_samples=0):
-    if len(rows) == 0:
-        return decisionnode()
-    current_score = scoref(rows, col_num + shift)
-
-    # Set up accumulator variables to track the best criteria
-    best_gain = 0.0
-    best_criteria = None
-    best_sets = None
-
-    column_count = col_num
-    for col in range(0, column_count):
-        # Generate the list of different values in
-        # this column
-        column_values = {}
-        for row in rows:
-            column_values[row[col]] = 1
-        # Now try dividing the rows up for each value
-        # in this column
-        for value in column_values.keys():
-            (set1, set2) = divideset(rows, col, value)
-
-            # Information gain
-            p = float(len(set1)) / len(rows)
-            gain = current_score - p * scoref(set1, col_num + shift) - (1 - p) * scoref(set2, col_num + shift)
-            if gain > best_gain and len(set1) > min_samples and len(set2) > min_samples and gain > min_gain:
-                best_gain = gain
-                best_criteria = (col, value)
-                best_sets = (set1, set2)
-
-    # Create the sub branches
-    if best_gain > 0:
-        trueBranch = buildtree_h(best_sets[0], col_num, shift, scoref, min_gain, min_samples)
-        falseBranch = buildtree_h(best_sets[1], col_num, shift, scoref, min_gain, min_samples)
-        return decisionnode(col=best_criteria[0], value=best_criteria[1],
-                            tb=trueBranch, fb=falseBranch)
-    else:
-        if col_num + shift == len(rows[0]) - 1:
-            return decisionnode(results=uniquecounts_h(rows, col_num + shift))
-        else:
-            return buildtree_h(rows, col_num, shift + 1, scoref=scoref, min_gain=min_gain, min_samples=min_samples)
 
 
 def max_depth(tree):
