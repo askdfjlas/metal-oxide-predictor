@@ -36,4 +36,4 @@ def main(input_csv, train_set_f, test_set_f):
 
 
 if __name__ == "__main__":
-    main("../data/training/preliminary.csv", "../data/training/train_set.csv", "../data/testing/test_set.csv")
+    main("../data/training/preliminary_48.csv", "../data/training/train_set_48.csv", "../data/testing/test_set_48.csv")

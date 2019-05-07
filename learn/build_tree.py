@@ -44,4 +44,4 @@ def main(input_f, output_img, output_json):
 
 
 if __name__ == "__main__":
-    main("../data/training/preliminary.csv", "../data/output/initial.jpg", "../data/output/initial.json")
+    main("../data/training/preliminary_48.csv", "../data/output/initial_48.jpg", "../data/output/initial_48.json")

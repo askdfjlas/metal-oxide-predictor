@@ -1,7 +1,7 @@
 # File for preprocessing as described in slide 13
 import time_plots
 
-k = 1
+k = 48
 INDIUM_INDEX = 11
 
 
@@ -44,4 +44,4 @@ def main(input_f, output_f):  # Main function
 
 
 if __name__ == "__main__":
-    main("../data/AirQualityUCI/AirQualityUCI.csv", "../data/training/preliminary.csv")
+    main("../data/AirQualityUCI/AirQualityUCI.csv", "../data/training/preliminary_48.csv")
